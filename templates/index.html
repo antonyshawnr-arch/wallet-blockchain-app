@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wallet Blockchain App</title>
+</head>
+<body>
+    <h1>🚀 Wallet Blockchain App</h1>
+
+    <h3>Create Wallet</h3>
+    <input id="name" placeholder="Enter name">
+    <button onclick="createWallet()">Create</button>
+
+    <h3>Send Coin</h3>
+    <input id="from" placeholder="From address">
+    <input id="to" placeholder="To address">
+    <input id="amount" placeholder="Amount">
+    <button onclick="send()">Send</button>
+
+    <h3>Actions</h3>
+    <button onclick="mine()">Mine Block</button>
+    <button onclick="viewChain()">View Blockchain</button>
+
+    <pre id="output"></pre>
+
+<script>
+function createWallet() {
+    fetch('/create_wallet', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name: document.getElementById('name').value})
+    })
+    .then(res => res.json())
+    .then(data => document.getElementById('output').innerText = JSON.stringify(data, null, 2));
+}
+
+function send() {
+    fetch('/send', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            from: document.getElementById('from').value,
+            to: document.getElementById('to').value,
+            amount: document.getElementById('amount').value
+        })
+    })
+    .then(res => res.json())
+    .then(data => document.getElementById('output').innerText = JSON.stringify(data, null, 2));
+}
+
+function mine() {
+    fetch('/mine')
+    .then(res => res.json())
+    .then(data => document.getElementById('output').innerText = JSON.stringify(data, null, 2));
+}
+
+function viewChain() {
+    fetch('/chain')
+    .then(res => res.json())
+    .then(data => document.getElementById('output').innerText = JSON.stringify(data, null, 2));
+}
+</script>
+
+</body>
+</html>
